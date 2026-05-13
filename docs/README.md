@@ -17,6 +17,7 @@
 | [09-anthropic-skills](./09-anthropic-skills.md) | Anthropic Skills 调研：133k stars Agent Skills 官方仓库 |
 | [10-重新审视Agent间通信](./10-重新审视Agent间通信.md) | 重新审视：已调研项目的 Agent 通信模式分析与缺口 |
 | [11-openharness](./11-openharness.md) | OpenHarness 调研：12k stars 多 Agent 协调基础设施 + ohmo 个人助手 |
+| [12-deerflow-2](./12-deerflow-2.md) | DeerFlow 2.0 调研：Subagent 不是真正的多 Agent，持久化后端分析 |
 
 ## 快速导航
 

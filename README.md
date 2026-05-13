@@ -18,8 +18,8 @@
 
 | 阶段 | 组件 | 解决什么问题 |
 |------|------|-------------|
-| **主控 Agent** | **OpenHarness** | 需求理解、Agent Loop、调度 subagent、ohmo 飞书助手 |
-| **Swarm 协调** | **ClawTeam-OpenClaw** | 多 Agent 协调、Task Dependencies、Team 模板、Git Worktree 隔离、Cost Dashboard |
+| **主控 Agent** | **DeerFlow 2.0** | 需求理解、Agent Loop、Subagent 托身、Sandbox 隔离、Memory |
+| **多 Agent 协调** | **ClawTeam-OpenClaw** | 真正的多 Agent 协调、Task Dependencies、Team 模板、Git Worktree 隔离、Cost Dashboard |
 | **规范层** | **OpenSpec** | 任务规范定义、spec-driven 开发、标准命令 |
 | **开发方法论** | **Superpowers** | brainstorming（需求澄清）、writing-plans（任务分解）、subagent-driven（并行开发）、TDD（测试驱动）、requesting-code-review（评审） |
 | **沙箱执行** | **CubeSandbox** | 代码在隔离环境中执行，<60ms 冷启动，<5MB 内存 |
@@ -37,69 +37,33 @@
                            │
                            ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  OpenHarness (主控 Agent)                                    │
-│  · ohmo — 飞书/Slack/Discord/Telegram 个人助手               │
-│  · Agent Loop — query → stream → tool-call → loop           │
-│  · CronCreate/List/Delete — 任务调度                        │
-│  · Skills — 兼容 anthropics/skills 格式                      │
+│  DeerFlow 2.0 (主控 Agent)                                  │
+│  · Lead Agent — 需求理解、任务拆解                          │
+│  · task_tool — 托身 Subagent 执行                          │
+│  · Sandbox — 隔离执行环境                                  │
+│  · Memory — 长期记忆                                       │
+│  · Checkpointer — LangGraph 状态持久化                     │
 └────────────┬────────────────────────────────────────────────┘
              │
              ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  ClawTeam-OpenClaw (Swarm 协调)                             │
-│  · clawteam spawn — 托身 worker agents                      │
-│  · Task Dependencies — --blocked-by + auto-unblock          │
-│  · Team Templates — TOML 模板 (hedge-fund 等)               │
-│  · Git Worktree — 每个 agent 强制隔离                        │
-│  · Cost Dashboard — 实时 token/cost 追踪                     │
-│  · inbox send/peek — Agent 间消息通信                       │
+│  ClawTeam-OpenClaw (多 Agent 协调)                        │
+│  · clawteam spawn — 托身独立 Worker Agents                │
+│  · Task Dependencies — --blocked-by + auto-unblock         │
+│  · Team Templates — TOML 模板                             │
+│  · Git Worktree — 每个 agent 强制隔离                      │
+│  · inbox send/peek/broadcast — Agent 间消息通信             │
+│  · Cost Dashboard — 实时 token/cost 追踪                   │
 └────────────┬────────────────────────────────────────────────┘
              │
              ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  OpenSpec (规范层)                                           │
-│  · 任务定义                                                 │
-│  · 规范约束                                                 │
-│  · spec-driven 执行                                         │
-└────────────┬────────────────────────────────────────────────┘
+│  OpenSpec (规范层)  │  Superpowers (TDD)  │  CubeSandbox (沙箱)  │
+└─────────────────────────────────────────────────────────────┘
              │
              ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  Superpowers (开发方法论)                                    │
-│                                                              │
-│  brainstorming ─── 需求澄清、提问、方案设计                   │
-│       ↓                                                     │
-│  writing-plans ─── 拆解成 2-5 分钟的小任务                   │
-│       ↓                                                     │
-│  subagent-driven ─── 并行分派给 subagent                     │
-│       ↓                                                     │
-│  TDD ─── 强制 RED-GREEN-REFACTOR                           │
-│       ↓                                                     │
-│  requesting-code-review ─── 评审代码                         │
-└────────────┬────────────────────────────────────────────────┘
-             │
-             ▼
-┌─────────────────────────────────────────────────────────────┐
-│  CubeSandbox (沙箱执行)                                      │
-│  · KVM 微虚拟机，<60ms 冷启动                                │
-│  · <5MB 内存占用                                            │
-│  · E2B SDK 兼容                                             │
-└────────────┬────────────────────────────────────────────────┘
-             │
-             ▼
-┌─────────────────────────────────────────────────────────────┐
-│  Temporal (Workflow 持久化)                                  │
-│  · 流水线状态持久化                                         │
-│  · 失败自动重试                                             │
-│  · 完整的执行历史                                           │
-└────────────┬────────────────────────────────────────────────┘
-             │
-             ▼
-┌─────────────────────────────────────────────────────────────┐
-│  GitHub Actions (CI/CD)                                      │
-│  · 自动化测试                                               │
-│  · 构建验证                                                 │
-│  · 部署                                                     │
+│  Temporal (Workflow 持久化)  │  GitHub Actions (CI/CD)       │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -109,12 +73,12 @@
 Human: "做一个用户登录功能"
     │
     ▼
-OpenHarness (需求理解)
-    │ ohmo 接收需求
-    │ Agent Loop 拆解 → [注册任务, 登录任务, 登出任务, 记住我功能]
+DeerFlow 2.0 (需求理解)
+    │ Lead Agent 接收需求
+    │ 拆解 → [注册任务, 登录任务, 登出任务, 记住我功能]
     │
     ▼
-ClawTeam-OpenClaw (Swarm 协调)
+ClawTeam-OpenClaw (多 Agent 协调)
     │ clawteam launch auth-team --goal "实现登录功能"
     │ ├── Task Dependencies: API schema → auth + DB → frontend → tests
     │ └── inbox 通信: "Here's the OpenAPI spec", "Auth endpoints ready"
@@ -127,8 +91,8 @@ OpenSpec (规范定义)
 Superpowers (开发方法论)
     │ brainstorming → writing-plans → subagent-driven
     │
-    ├──► Agent-A: 实现注册功能 (CubeSandbox + Git Worktree)
-    ├──► Agent-B: 实现登录功能 (CubeSandbox + Git Worktree)
+    ├──► Agent-A: 实现注册功能 (Sandbox + Git Worktree)
+    ├──► Agent-B: 实现登录功能 (Sandbox + Git Worktree)
     ├──► Agent-C: 编写测试 (TDD)
     │
     ▼
@@ -147,7 +111,7 @@ Human 验收签字 ✅
 
 | 组件 | 来源 | 调研文档 |
 |------|------|---------|
-| OpenHarness | https://github.com/HKUDS/OpenHarness | [11-openharness](./docs/11-openharness.md) |
+| DeerFlow 2.0 | https://github.com/bytedance/deer-flow | [12-deerflow-2](./docs/12-deerflow-2.md) |
 | ClawTeam-OpenClaw | https://github.com/win4r/ClawTeam-OpenClaw | (见下方说明) |
 | OpenSpec | https://github.com/Fission-AI/OpenSpec | [01-openspec-overview](./docs/01-openspec-overview.md) |
 | Superpowers | https://github.com/obra/superpowers | [04-multi-agent-landscape](./docs/04-multi-agent-landscape.md) |
@@ -169,8 +133,8 @@ Human 验收签字 ✅
 
 | 文档 | 说明 |
 |------|------|
-| [OpenSpec 概述](./docs/01-openspec-overview.md) | 什么是 OpenSpec，核心工作流，命令 |
-| [OpenSpec 能力分析](./docs/02-openspec-capabilities.md) | 任务拆分/调度/多 Agent 能力分析 |
+| [OpenSpec 概述](./docs/01-openspec-overview.md) | OpenSpec 核心工作流、命令、哲学 |
+| [OpenSpec 能力分析](./docs/02-openspec-capabilities.md) | 任务拆分/调度/多 Agent 协作能力分析 |
 | [Ai-Harness 愿景](./docs/03-ai-harness-vision.md) | 项目定位、目标能力、架构方向 |
 | [多 Agent 协作方案对比](./docs/04-multi-agent-landscape.md) | Superpowers / DeerFlow / CubeSandbox / OpenHarness / ClawTeam 深度分析 |
 | [Everything Claude Code](./docs/05-everything-claude-code.md) | 181k stars 的 Agent 工具集 |
@@ -180,15 +144,16 @@ Human 验收签字 ✅
 | [Anthropic Skills](./docs/09-anthropic-skills.md) | 133k stars Agent Skills 官方仓库 |
 | [重新审视 Agent 间通信](./docs/10-重新审视Agent间通信.md) | 已调研项目的 Agent 通信模式分析与缺口 |
 | [OpenHarness](./docs/11-openharness.md) | 12k stars 多 Agent 协调基础设施 + ohmo 个人助手 |
+| [DeerFlow 2.0](./docs/12-deerflow-2.md) | DeerFlow 2.0 调研：Subagent 不是真正的多 Agent，持久化后端分析 |
 
 ## 参考项目
 
-- [OpenHarness](https://github.com/HKUDS/OpenHarness) — 主控 Agent + ohmo 飞书助手
-- [ClawTeam-OpenClaw](https://github.com/win4r/ClawTeam-OpenClaw) — Swarm 多 Agent 协调 + Task Dependencies + Team 模板
+- [DeerFlow 2.0](https://github.com/bytedance/deer-flow) — 主控 Agent + Subagent + Sandbox + Memory
+- [ClawTeam-OpenClaw](https://github.com/win4r/ClawTeam-OpenClaw) — 真正的多 Agent 协调 + Task Dependencies + Team 模板
 - [OpenSpec](https://github.com/Fission-AI/OpenSpec) — 规范层框架
 - [Superpowers](https://github.com/obra/superpowers) — Agent skills framework + TDD 方法论
 - [CubeSandbox](https://github.com/TencentCloud/CubeSandbox) — KVM 沙箱，<60ms 冷启动
 - [Temporal](https://github.com/temporalio/temporal) — 20k stars 持久化执行平台
 - [Hermes Agent](https://github.com/NousResearch/hermes-agent) — 147k stars 自改进 AI Agent
-- [DeerFlow](https://github.com/bytedance/deer-flow) — Sandbox + Sub-agents + Memory
-- [Everything Claude Code](https://github.com/affaan-m/everything-claude-code) — 181k stars 的跨平台 Agent 工具集
+- [OpenHarness](https://github.com/HKUDS/OpenHarness) — 多 Agent 协调基础设施 + ohmo
+- [DeerFlow](https://github.com/bytedance/deer-flow) — 原始版本（1.x 分支）
