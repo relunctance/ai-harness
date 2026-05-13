@@ -18,8 +18,8 @@
 
 | 阶段 | 组件 | 解决什么问题 |
 |------|------|-------------|
-| **主控 Agent** | **DeerFlow 2.0** | 需求理解、Agent Loop、Subagent 托身、Sandbox 隔离、Memory |
-| **多 Agent 协调** | **ClawTeam-OpenClaw** | 真正的多 Agent 协调、Task Dependencies、Team 模板、Git Worktree 隔离、Cost Dashboard |
+| **主控 Agent** | **OpenHarness** | 需求理解、Agent Loop、Swarm 管理、Cron 调度、ohmo 飞书助手、Sandbox、Memory |
+| **多 Agent 协调** | **ClawTeam-OpenClaw** | Task Dependencies、Team 模板、Git Worktree 隔离、Cost Dashboard、inbox 通信 |
 | **规范层** | **OpenSpec** | 任务规范定义、spec-driven 开发、标准命令 |
 | **开发方法论** | **Superpowers** | brainstorming（需求澄清）、writing-plans（任务分解）、subagent-driven（并行开发）、TDD（测试驱动）、requesting-code-review（评审） |
 | **沙箱执行** | **CubeSandbox** | 代码在隔离环境中执行，<60ms 冷启动，<5MB 内存 |
@@ -37,31 +37,31 @@
                            │
                            ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  DeerFlow 2.0 (主控 Agent)                                  │
-│  · Lead Agent — 需求理解、任务拆解                          │
-│  · task_tool — 托身 Subagent 执行                          │
+│  OpenHarness (主控 Agent)                                  │
+│  · ohmo — 飞书/Slack/Discord/Telegram 个人助手              │
+│  · Agent Loop — query → stream → tool-call → loop         │
+│  · Swarm — team/agent/send_message/task 管理              │
+│  · CronCreate/List/Delete — 任务调度                       │
 │  · Sandbox — 隔离执行环境                                  │
 │  · Memory — 长期记忆                                       │
-│  · Checkpointer — LangGraph 状态持久化                     │
-└────────────┬────────────────────────────────────────────────┘
-             │
-             ▼
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+                           ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  ClawTeam-OpenClaw (多 Agent 协调)                        │
-│  · clawteam spawn — 托身独立 Worker Agents                │
+│  ClawTeam-OpenClaw (多 Agent 协调)                         │
+│  · clawteam spawn — 托身独立 Worker Agents                 │
 │  · Task Dependencies — --blocked-by + auto-unblock         │
-│  · Team Templates — TOML 模板                             │
-│  · Git Worktree — 每个 agent 强制隔离                      │
+│  · Team Templates — TOML 模板                              │
 │  · inbox send/peek/broadcast — Agent 间消息通信             │
 │  · Cost Dashboard — 实时 token/cost 追踪                   │
-└────────────┬────────────────────────────────────────────────┘
-             │
-             ▼
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+                           ▼
 ┌─────────────────────────────────────────────────────────────┐
 │  OpenSpec (规范层)  │  Superpowers (TDD)  │  CubeSandbox (沙箱)  │
 └─────────────────────────────────────────────────────────────┘
-             │
-             ▼
+                           │
+                           ▼
 ┌─────────────────────────────────────────────────────────────┐
 │  Temporal (Workflow 持久化)  │  GitHub Actions (CI/CD)       │
 └─────────────────────────────────────────────────────────────┘

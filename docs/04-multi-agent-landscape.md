@@ -301,13 +301,29 @@ with Sandbox.create(template=os.environ["CUBE_TEMPLATE_ID"]) as sandbox:
 需要：统一接口抽象多 Agent（Claude Code/Cursor/Copilot 等）
 ```
 
-**✅ 已被 ClawTeam 部分填补**：
-- `clawteam spawn` 支持多种 Agent（OpenClaw/Claude Code/Codex/Hermes/nanobot/Cursor）
-- Git Worktree 隔离
+**✅ 已被 OpenHarness 填补**：
+- `team_create/delete` — 团队生命周期管理
+- `agent_tool` — 统一 Agent spawn（多种 backend：subprocess/tmux/ssh）
+- `send_message_tool` — Mailbox 消息传递
+- `task_create/list/update` — 任务管理
+- `worktree` — Git Worktree 隔离
+- `permissions` — 安全权限控制
 
-**仍缺失**：
-- 统一的任务队列（ClawTeam 用文件 + tmux，规模有限）
-- 跨机器协调（NFS/P2P 还在规划中）
+**OpenHarness Swarm vs ClawTeam**：
+
+| 能力 | OpenHarness | ClawTeam |
+|------|-------------|----------|
+| 团队管理 | ✅ | ✅ |
+| Agent spawn | ✅ 多 backend | ✅ |
+| Mailbox/通信 | ✅ | ✅ |
+| Task 管理 | ✅ | ✅ |
+| Git Worktree | ✅ | ✅ |
+| Cost Dashboard | ❌ | ✅ |
+| Team Templates | ❌ | ✅ TOML |
+| Cron 调度 | ✅ | ❌ |
+| ohmo 助手 | ✅ | ❌ |
+
+**结论**：OpenHarness 是更完整的统一多 Agent 管理层，ClawTeam 的 Team Templates 和 Cost Dashboard 是额外优势。
 
 ---
 
@@ -316,10 +332,10 @@ with Sandbox.create(template=os.environ["CUBE_TEMPLATE_ID"]) as sandbox:
 | 缺口 | 状态 | 填补组件 |
 |------|------|---------|
 | 任务调度中心 | ✅ 已填补 | Temporal Schedule + tctl/API |
-| Agent 间通信协议 | ✅ 已填补 | ClawTeam（inbox） |
+| Agent 间通信协议 | ✅ 已填补 | ClawTeam（inbox）/ OpenHarness（Mailbox） |
 | 流水线编排引擎 | ✅ 已填补 | Temporal |
 | 规范层 + 执行层 | ✅ 已填补 | OpenSpec（人工驱动执行） |
-| 统一多 Agent 管理层 | ⚠️ 部分填补 | ClawTeam（规模有限） |
+| 统一多 Agent 管理层 | ✅ 已填补 | OpenHarness Swarm |
 | 事件驱动 | ❌ 仍缺失 | — |
 | 优先级队列 | ❌ 仍缺失 | — |
 
@@ -332,12 +348,13 @@ with Sandbox.create(template=os.environ["CUBE_TEMPLATE_ID"]) as sandbox:
 │                         Ai-Harness                            │
 │                                                              │
 │  ┌──────────────────────────────────────────────────────────┐ │
-│  │                  DeerFlow 2.0 (主控 Agent)                │ │
-│  │  Lead Agent — 需求理解、任务拆解                          │ │
-│  │  task_tool — 托身 Subagent 执行                          │ │
-│  │  Sandbox — 隔离执行环境                                  │ │
+│  │                  OpenHarness (主控 Agent)                 │ │
+│  │  ohmo — 飞书/Slack/Discord/Telegram 个人助手             │ │
+│  │  Agent Loop — query → stream → tool-call → loop          │ │
+│  │  Swarm — team/agent/send_message/task 管理               │ │
+│  │  CronCreate/List/Delete — 任务调度                       │ │
+│  │  Sandbox — 隔离执行环境                                   │ │
 │  │  Memory — 长期记忆                                       │ │
-│  │  Checkpointer — LangGraph 状态持久化                     │ │
 │  └──────────────────────────┬─────────────────────────────┘ │
 │                               │                               │
 │  ┌──────────────────────────▼─────────────────────────────┐ │
@@ -367,18 +384,18 @@ with Sandbox.create(template=os.environ["CUBE_TEMPLATE_ID"]) as sandbox:
 
 ### 核心模块说明
 
-> ✅ = 已有 MVP 组件，⚠️ = 部分填补，❌ = 仍缺失
+> ✅ = 已有 MVP 组件，❌ = 仍缺失
 
 | 模块 | 职责 | 技术选型 | 状态 |
 |------|------|---------|------|
-| **主控 Agent** | 需求理解、任务拆解、Subagent 托身 | DeerFlow 2.0 | ✅ |
+| **主控 Agent** | 需求理解、任务拆解、Swarm 管理、Cron 调度 | OpenHarness | ✅ |
 | **多 Agent 协调** | Task Dependencies、inbox 通信、Team 模板 | ClawTeam-OpenClaw | ✅ |
 | **规范层** | Spec-Driven 任务定义 | OpenSpec | ✅ |
 | **开发方法论** | TDD、brainstorming、parallel dispatch | Superpowers | ✅ |
 | **沙箱执行** | 代码隔离执行，<60ms 冷启动 | CubeSandbox | ✅ |
 | **Workflow 持久化** | 状态持久化、自动重试、失败恢复 | Temporal | ✅ |
 | **CI/CD** | 自动化测试、构建、部署 | GitHub Actions | ✅ |
-| **Scheduler** | Cron 定时触发 | 自托管 Temporal（tctl/API 或 GitHub Actions Cron） | ✅ |
+| **Scheduler** | Cron 定时触发 | 自托管 Temporal + tctl/API | ✅ |
 | **事件驱动** | Git Hook 触发、代码提交触发 | ❌ 仍缺失 | ❌ |
 | **优先级队列** | 任务优先级控制 | ❌ 仍缺失 | ❌ |
 
@@ -390,7 +407,7 @@ with Sandbox.create(template=os.environ["CUBE_TEMPLATE_ID"]) as sandbox:
 
 | 组件 | 选型 | 调研文档 |
 |------|------|---------|
-| 主控 Agent | **DeerFlow 2.0** | [12-deerflow-2.md](./12-deerflow-2.md) |
+| 主控 Agent | **OpenHarness** | [11-openharness.md](./11-openharness.md) |
 | 多 Agent 协调 | **ClawTeam-OpenClaw** | （见 README） |
 | 规范层 | **OpenSpec** | [01-openspec-overview.md](./01-openspec-overview.md) |
 | 开发方法论 | **Superpowers** | [04-multi-agent-landscape.md](./04-multi-agent-landscape.md) |
