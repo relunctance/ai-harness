@@ -44,25 +44,39 @@
 - **定位**: Evolutionary self-improvement for Hermes Agent
 - **特点**: DSPy + GEPA 进化优化, 5 阶段递进, No GPU, ~$2-10 per run, ICLR 2026 Oral
 
+### Temporal
+- **GitHub**: https://github.com/temporalio/temporal
+- **Stars**: 20.2k
+- **定位**: Durable execution platform（持久化执行平台）
+- **特点**: Workflow 状态持久化, 自动重试, 历史记录, 多语言 SDK (Go/Java/Python/TS/.NET)
+
+### Anthropic Skills
+- **GitHub**: https://github.com/anthropics/skills
+- **Stars**: 133k
+- **定位**: Agent Skills 官方参考实现
+- **特点**: agentskills.io 标准, SKILL.md 格式规范, 文档/创意/开发/企业技能集
+
 ---
 
 ## 能力矩阵
 
-| 能力 | Superpowers | DeerFlow | CubeSandbox | ECC | Hermes | Self-Evolution | 缺口 |
-|------|:-----------:|:--------:|:-----------:|:---:|:------:|:--------------:|:----:|
-| 任务调度（Cron/触发器） | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | **❌** |
-| Agent 间通信协议 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | **❌** |
-| 流水线编排引擎 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | **❌** |
-| Subagent 管理 | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | ✅ |
-| 持久化记忆 | ❌ | ✅ | ❌ | ✅ (instincts) | ✅ (FTS5) | ❌ | ✅ |
-| 沙箱执行环境 | ❌ | ✅ | ✅ | ❌ | ✅ (7种) | ❌ | ✅ |
-| 多 Coding Agent 支持 | ✅ (8种) | ✅ | ❌ | ✅ (10+) | ✅ | ❌ | ✅ |
-| 规范层（Spec-Driven） | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | **❌** |
-| TDD / 代码质量 | ✅ | ❌ | ❌ | ✅ | ❌ | ❌ | ✅ |
-| 安全审计 | ❌ | ❌ | ❌ | ✅ (AgentShield) | ❌ | ❌ | ✅ |
-| 自改进学习 | ❌ | ❌ | ❌ | ✅ (instincts) | ✅ | ✅ (GEPA) | ✅ |
-| 多平台网关 | ❌ | ✅ (IM) | ❌ | ❌ | ✅ (20+) | ❌ | ✅ |
-| 自动 Skill 进化 | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | **❌** |
+| 能力 | Superpowers | DeerFlow | CubeSandbox | ECC | Hermes | Self-Evolution | Temporal | 缺口 |
+|------|:-----------:|:--------:|:-----------:|:---:|:------:|:--------------:|:--------:|:----:|
+| 任务调度（Cron/触发器） | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ✅ | **❌** |
+| Agent 间通信协议 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | **❌** |
+| 流水线编排引擎 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | **❌** |
+| Subagent 管理 | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | ❌ | ✅ |
+| 持久化记忆 | ❌ | ✅ | ❌ | ✅ (instincts) | ✅ (FTS5) | ❌ | ❌ | ✅ |
+| 沙箱执行环境 | ❌ | ✅ | ✅ | ❌ | ✅ (7种) | ❌ | ❌ | ✅ |
+| 多 Coding Agent 支持 | ✅ (8种) | ✅ | ❌ | ✅ (10+) | ✅ | ❌ | ❌ | ✅ |
+| 规范层（Spec-Driven） | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | **❌** |
+| TDD / 代码质量 | ✅ | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ | ✅ |
+| 安全审计 | ❌ | ❌ | ❌ | ✅ (AgentShield) | ❌ | ❌ | ❌ | ✅ |
+| 自改进学习 | ❌ | ❌ | ❌ | ✅ (instincts) | ✅ | ✅ (GEPA) | ❌ | ✅ |
+| 多平台网关 | ❌ | ✅ (IM) | ❌ | ❌ | ✅ (20+) | ❌ | ❌ | ✅ |
+| 自动 Skill 进化 | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | **❌** |
+| Workflow 持久化执行 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
+| 状态机 / DAG | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 
 ---
 

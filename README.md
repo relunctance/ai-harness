@@ -19,6 +19,8 @@
 | [Everything Claude Code](./docs/05-everything-claude-code.md) | 181k stars 的 Agent 工具集 |
 | [Hermes Agent](./docs/06-hermes-agent.md) | 147k stars 自改进 Agent |
 | [Hermes Agent Self-Evolution](./docs/07-hermes-agent-self-evolution.md) | DSPy + GEPA 进化优化 |
+| [Temporal](./docs/08-temporal.md) | 20k stars 持久化执行平台 |
+| [Anthropic Skills](./docs/09-anthropic-skills.md) | 133k stars Agent Skills 官方仓库 |
 
 ## 核心思路
 
@@ -43,3 +45,5 @@
 - [Everything Claude Code](https://github.com/affaan-m/everything-claude-code) — 181k stars 的跨平台 Agent 工具集
 - [Hermes Agent](https://github.com/NousResearch/hermes-agent) — 147k stars 自改进 AI Agent
 - [Hermes Agent Self-Evolution](https://github.com/NousResearch/hermes-agent-self-evolution) — DSPy + GEPA 进化优化
+- [Temporal](https://github.com/temporalio/temporal) — 20k stars 持久化执行平台
+- [Anthropic Skills](https://github.com/anthropics/skills) — 133k stars Agent Skills 官方仓库
