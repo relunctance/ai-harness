@@ -104,3 +104,64 @@
                     │     (CI/CD)      │
                     └──────────────────┘
 ```
+
+## 专家团系统 (Expert Teams)
+
+基于「角色 + Skills 组合」的子 Agent 定制系统。
+
+### 核心组件
+
+| 组件 | 仓库 | 用途 |
+|------|------|------|
+| **Role-Creator** | [relunctance/role-creator](https://github.com/relunctance/role-creator) | 创建单个 role 目录结构 |
+| **Team-Assembler** | [relunctance/team-assembler](https://github.com/relunctance/team-assembler) | 组合多个 roles 为完整团队 |
+| **role-installer** | [relunctance/role-installer](https://github.com/relunctance/role-installer) | 安装专家团（clone 仓库 + skills） |
+| **role-skill-manager** | [relunctance/role-skill-manager](https://github.com/relunctance/role-skill-manager) | 管理 role 的 skills（添加/删除/升级） |
+| **inbox-router** | [relunctance/inbox-router](https://github.com/relunctance/inbox-router) | sub-agent 协调通信（任务分配/汇报/等待） |
+
+### 架构图
+
+```
+Human → 主理人 (OpenHarness)
+           ↓
+      Inbox-Router
+           ↓ dispatch / report / wait-for
+    ┌──────┼──────┐
+    ↓      ↓      ↓
+  Role A  Role B  Role C
+           ↓
+      汇报给主理人
+```
+
+### 目录结构
+
+```
+~/expert-teams/<team_name>/
+├── SKILL.md              ← 主理人入口 skill
+├── config.yaml           ← 团队全局配置
+├── common_skills/       ← 公共 skills
+├── roles/                ← 子 agent 目录
+│   ├── lisi/
+│   │   ├── SKILL.md
+│   │   ├── config.yaml   ← 可覆盖团队配置
+│   │   └── skills/        ← 该 role 的 skills
+│   ├── wangwu/
+│   └── zhangsan/
+└── scripts/
+```
+
+### 使用流程
+
+1. **创建 Role**: `Role-Creator` 创建单个 role
+2. **调试 Role**: 单独调试优化每个 role
+3. **组装团队**: `Team-Assembler` 组合多个 roles
+4. **安装团队**: `role-installer` 一键安装
+5. **管理 Skills**: `role-skill-manager` 添加/升级 skills
+6. **协调工作**: `inbox-router` 分配任务、接收汇报
+
+### 相关组件
+
+- **OpenHarness**: 主理人（任务拆解、协调）
+- **ClawTeam**: Git Worktree 隔离、Task Dependencies
+- **Superpowers**: subagent-driven 开发模式
+- **Temporal**: 任务持久化、失败重试
