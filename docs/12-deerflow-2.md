@@ -170,7 +170,7 @@ DeerFlow 2.0 是一个**单主 Agent + 从属 Subagent**的系统，存在以下
 
 | 场景 | 角色 | 说明 |
 |------|------|------|
-| **Sandbox 执行引擎** | 可选组件 | OpenHarness 可调用 DeerFlow 的 Sandbox 执行代码 |
+| **Sandbox 执行引擎** | 可选组件 | OpenHarness 内置 Sandbox（主要），DeerFlow 2.0 作为备选 |
 | **快速原型验证** | 独立使用 | 单一 Agent 任务，适合快速验证 |
 
 ### DeerFlow 2.0 vs Temporal vs ClawTeam

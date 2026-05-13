@@ -22,7 +22,7 @@
 | **多 Agent 协调** | **ClawTeam-OpenClaw** | Task Dependencies、Team 模板、Git Worktree 隔离、Cost Dashboard、inbox 通信 |
 | **规范层** | **OpenSpec** | 任务规范定义、spec-driven 开发、标准命令 |
 | **开发方法论** | **Superpowers** | brainstorming（需求澄清）、writing-plans（任务分解）、subagent-driven（并行开发）、TDD（测试驱动）、requesting-code-review（评审） |
-| **沙箱执行** | **CubeSandbox**（DeerFlow 2.0 可选替代） | 代码在隔离环境中执行，<60ms 冷启动，<5MB 内存 |
+| **沙箱执行** | **CubeSandbox** | 代码在隔离环境中执行，<60ms 冷启动，<5MB 内存 |
 | **Workflow 持久化** | **Temporal** | 流水线状态持久化、自动重试、失败恢复、历史记录 |
 | **CI/CD** | **GitHub Actions** | 自动化测试、构建、部署 |
 | **Human** | **你** | 验收签字、关键决策、需求澄清 |
