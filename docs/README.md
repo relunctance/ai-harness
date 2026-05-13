@@ -118,6 +118,7 @@
 | **role-installer** | [relunctance/role-installer](https://github.com/relunctance/role-installer) | 安装专家团（clone 仓库 + skills） |
 | **role-skill-manager** | [relunctance/role-skill-manager](https://github.com/relunctance/role-skill-manager) | 管理 role 的 skills（添加/删除/升级） |
 | **inbox-router** | [relunctance/inbox-router](https://github.com/relunctance/inbox-router) | sub-agent 协调通信（任务分配/汇报/等待） |
+| **master-agent** | [relunctance/master-agent-skill](https://github.com/relunctance/master-agent-skill) | 主理人 — OpenHarness 配置为专家团主 Agent |
 
 ### 架构图
 
