@@ -197,12 +197,15 @@ plugins/
 | **自改进学习** | ✅ | ❌ | ❌ | ✅ (instincts) | ✅ |
 | **Cron 调度** | ✅ | ❌ | ❌ | ❌ | ✅ |
 | **多平台网关** | ✅ (20+) | ❌ | ✅ (IM) | ❌ | ✅ |
+| **多 Agent 协作** | ⚠️ | ✅ | ❌ | ✅ | ✅ |
 | **Subagent** | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **任意模型** | ✅ (200+) | ❌ | ❌ | ❌ | ✅ |
 | **多运行环境** | ✅ (7种) | ❌ | ✅ | ❌ | ✅ |
 | **FTS5 搜索** | ✅ | ❌ | ❌ | ❌ | ✅ |
 | **Workflow 状态机** | ❌ | ❌ | ❌ | ❌ | ✅ |
 | **规范层** | ❌ | ❌ | ❌ | ❌ | ✅ |
+
+> ⚠️ DeerFlow 的"多 Agent"是 Subagent 系统，不是真正的多 Agent 协作。主控 Agent 已选型 OpenHarness。
 
 ---
 
@@ -230,4 +233,4 @@ plugins/
 | FTS5 session search | 跨 session 知识检索 |
 | 自改进 skills | 从执行历史中自动优化 workflow |
 | 多平台 gateway | 统一消息总线 |
-| 多运行环境 | 抽象 Sandbox 接口（DeerFlow/CubeSandbox） |
+| 多运行环境 | 抽象 Sandbox 接口（主要用 CubeSandbox） |

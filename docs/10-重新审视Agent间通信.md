@@ -95,36 +95,25 @@ Task 3 (Agent C) ─┘
 
 ## 对 Ai-Harness 的启示
 
-### 需要设计的能力
+### 已有的解决方案
 
-Ai-Harness 应该补全：
+经过调研，MVP 阶段已选定以下组件填补这些能力：
 
-```
-1. 消息总线（Agent Message Bus）
-   - 持久化消息队列
-   - Pub/Sub 订阅模式
-   - 服务发现（who is online?）
+| 需要的能力 | MVP 组件 | 说明 |
+|-----------|---------|------|
+| **消息总线** | OpenHarness Mailbox / ClawTeam inbox | Agent 间消息传递 |
+| **Agent Registry** | OpenHarness Swarm | team/agent 管理 |
+| **对等通信** | ClawTeam inbox send/peek/broadcast | Agent↔Agent 直接通信 |
+| **Task Dependencies** | ClawTeam | --blocked-by + auto-unblock |
+| **持久化执行** | Temporal | Workflow 状态持久化 |
 
-2. Agent 身份与发现（Agent Registry）
-   - 每个 Agent 有唯一 ID
-   - 能查询其他 Agent 的能力
-   - 动态上下线
+### 仍需关注的缺口
 
-3. 对等通信协议（Peer-to-Peer Messaging）
-   - Agent A 可以直接发消息给 Agent B
-   - 不需要通过父 Agent 中转
-   - 支持同步（请求-响应）和异步（发完即忘）
-
-4. 共享状态空间（Shared State）
-   - 任务队列
-   - 共享 KV 存储
-   - 事件流
-
-5. 生命周期管理
-   - Agent 启动/停止
-   - 健康检查
-   - 优雅关闭
-```
+| 缺口 | 说明 |
+|------|------|
+| **事件驱动触发** | Git Hook → 自动触发任务 |
+| **优先级队列** | 任务优先级控制 |
+|| **规范层 + 执行层 闭环** | OpenSpec → 自动执行 |
 
 ### 参考借鉴
 
@@ -140,18 +129,22 @@ Ai-Harness 应该补全：
 
 ## 结论
 
-**缺失的不是"Agent 通信"的小功能，而是完整的 Agent Mesh 基础设施。**
+经过完整调研，MVP 阶段已选定组件填补核心缺口。
 
-现有项目只实现了：
-- ✅ 单 Agent 远程控制（ACP）
-- ✅ 主从托身（delegate_task / subagent）
-- ✅ 并行任务分派（Superpowers）
+**已填补的缺口**：
 
-**缺失的**：
-- ❌ Agent ↔ Agent 对等通信
-- ❌ 持久化消息总线
-- ❌ 动态服务发现
-- ❌ 共享状态空间
-- ❌ 网状拓扑支持
+| 缺口 | MVP 组件 |
+|------|---------|
+| Agent ↔ Agent 对等通信 | ClawTeam inbox / OpenHarness Mailbox |
+| 持久化消息总线 | ClawTeam inbox（文件）、OpenHarness Mailbox |
+| 动态服务发现 | OpenHarness Swarm（team/agent registry） |
+| Task Dependencies | ClawTeam（--blocked-by + auto-unblock） |
+| 共享状态空间 | Temporal（Workflow 持久化） |
 
-**这是 Ai-Harness 最核心的差异化价值所在。**
+**仍需关注的缺口**：
+
+| 缺口 | 说明 |
+|------|------|
+| 事件驱动触发 | Git Hook → 自动触发任务 |
+| 优先级队列 | 任务优先级控制 |
+| 规范层 + 执行层 闭环 | OpenSpec → 自动执行 |
