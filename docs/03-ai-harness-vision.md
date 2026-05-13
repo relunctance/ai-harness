@@ -2,90 +2,94 @@
 
 ## 项目定位
 
-**多 Agent 自动化协作基础设施** — 在 OpenSpec 规范层基础上，补全任务调度、Agent 间通信、自动化流水线，构建真正的多 Agent 协作系统。
+**多 Agent 自动化协作基础设施** — 用已有开源组件（不自研），实现"需求→拆解→评审→设计方案→开发→测试→验收"的多 Agent 协作，**人在关键节点把关**。
 
 ## 解决的问题
 
-OpenSpec 解决了"AI 编程需求模糊"的问题，但缺少：
+OpenSpec 解决了"AI 编程需求模糊"的问题，但缺少任务调度、Agent 间通信、自动化流水线能力。
 
-| 缺失能力 | 描述 | 后果 |
-|----------|------|------|
-| 任务调度 | 无法定时自动触发 | 人工干预多，无法自动化 |
-| Agent 通信 | Agent 之间无法消息传递 | 协作靠人工桥接 |
-| 流水线 | 没有自动执行链 | 无法端到端自动化 |
+**解决方案**：用已有组件补全，而不是自研。
 
-**Ai-Harness** 在 OpenSpec 基础上补全这三块。
+## 阶段一 MVP 组件
+
+| 组件 | 解决什么问题 |
+|------|-------------|
+| **OpenHarness** | 主控 Agent + ohmo 飞书助手 + Swarm 多 Agent 协调 + Mailbox 消息队列 |
+| **OpenSpec** | 规范层，spec-driven 开发 |
+| **Superpowers** | TDD 方法论，brainstorming，parallel agent dispatch |
+| **CubeSandbox** | 沙箱执行，<60ms 冷启动 |
+| **Temporal** | Workflow 持久化，自动重试，失败恢复 |
+| **GitHub Actions** | CI/CD 自动化 |
 
 ## 目标能力
 
-### 1. OpenSpec 规范引擎（继承）
-- 完整的 propose → specs → design → tasks → verify → archive 工作流
-- Delta spec 管理
-- 跨仓库规范同步
+### 1. 需求理解与拆解
+- OpenHarness Agent Loop 理解用户需求
+- Superpowers brainstorming 澄清模糊需求
+- 拆解成可执行的小任务
 
-### 2. 任务调度中心
-- Cron 驱动的定时任务
-- 任务依赖图
-- 优先级队列
-- 失败重试机制
+### 2. 规范驱动开发
+- OpenSpec 定义任务规范
+- Superpowers writing-plans 分解任务
+- spec-driven 执行
 
-### 3. Agent 网关
-- 支持 Claude Code、Cursor、Windsurf、Copilot 等
-- Agent 间消息队列通信
-- 任务分发与状态同步
+### 3. 多 Agent 并行开发
+- OpenHarness Swarm 协调多 Agent
+- CubeSandbox 隔离执行环境
+- Superpowers subagent-driven 并行分派
 
-### 4. Workspace 协调
-- 跨仓库/跨服务规划
-- 多仓库联动变更
-- 规范冲突检测与合并
+### 4. TDD 测试驱动
+- Superpowers TDD 流程
+- RED-GREEN-REFACTOR 强制循环
+- GitHub Actions CI 全绿
 
-### 5. 一键部署
-- Docker Compose / Kubernetes 部署
-- 基础设施即代码
+### 5. Workflow 持久化
+- Temporal 流水线状态持久化
+- 失败自动重试
+- 完整执行历史
+
+### 6. 人在关键节点把关
+- ohmo 飞书/Slack/Discord/Telegram 接收通知
+- Human 审批设计方案
+- Human 验收签字
 
 ## 不做什么
 
 - ❌ 不做自己的 AI 模型
 - ❌ 不做 IDE 或编辑器
-- ❌ 不重复造 OpenSpec 已经做好的轮子
+- ❌ 不自研消息队列/任务队列/调度器
+- ❌ 不重复造轮子
 
-## 架构方向（待讨论）
+## 架构图
 
 ```
-┌──────────────────────────────────────────────────────────┐
-│                      Ai-Harness                          │
-│                                                          │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐ │
-│  │  Scheduler    │  │  Agent Mesh   │  │  Spec Engine │ │
-│  │  (Cron+Queue) │  │  (Message Bus)│  │  (OpenSpec)  │ │
-│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘ │
-│         │                  │                  │         │
-│         └──────────────────┼──────────────────┘         │
-│                            │                              │
-│         ┌──────────────────┼──────────────────┐          │
-│         │                  │                  │          │
-│         ▼                  ▼                  ▼          │
-│  ┌────────────┐    ┌────────────┐    ┌────────────┐   │
-│  │ Claude Code │    │   Cursor   │    │  Copilot   │   │
-│  │   Agent     │    │   Agent    │    │   Agent    │   │
-│  └────────────┘    └────────────┘    └────────────┘   │
-│                                                          │
-└──────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│                      Human                                  │
+│         飞书/审批 → 验收签字 · 需求澄清 · 关键审批            │
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────────┐
+│  OpenHarness (主控 Agent)                                    │
+│  · ohmo — 飞书/Slack/Discord/Telegram 个人助手               │
+│  · Agent Loop — query → stream → tool-call → loop           │
+│  · Swarm — team/agent/send_message 多 Agent 协调             │
+│  · Mailbox — 文件-based 异步消息队列                         │
+│  · CronCreate/List/Delete — 任务调度                        │
+└────────────┬────────────────────────────────────────────────┘
+             │
+             ▼
+┌─────────────────────────────────────────────────────────────┐
+│  OpenSpec (规范层)                                           │
+│  Superpowers (开发方法论)                                    │
+│  CubeSandbox (沙箱执行)                                      │
+│  Temporal (Workflow 持久化)                                  │
+│  GitHub Actions (CI/CD)                                      │
+└─────────────────────────────────────────────────────────────┘
 ```
-
-## 待调研组件
-
-以下组件需要调研，确定技术选型：
-
-1. **消息队列**：Redis Pub/Sub vs NATS vs Kafka
-2. **任务队列**：Bull (Redis) vs Celery vs 自研
-3. **调度器**：node-cron vs Quartz vs 自研
-4. **Agent 运行时**：Docker 容器化 vs 直接调用 CLI
-5. **状态存储**：Redis vs PostgreSQL vs 文件系统
-6. **API 网关**：Fastify vs Express vs 自研
-7. **部署方式**：Docker Compose vs Kubernetes
-8. **Agent 协议**：WebSocket vs gRPC vs HTTP Long-poll
 
 ## 下一步
 
-先讨论清楚整体架构和技术选型，再逐步实现。
+1. 确认组件清单（当前是否合适）
+2. 选定第一个试点任务
+3. 验证现有组件能否跑通端到端流程
