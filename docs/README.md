@@ -114,11 +114,11 @@
 | 组件 | 仓库 | 用途 |
 |------|------|------|
 | **Role-Creator** | [relunctance/role-creator](https://github.com/relunctance/role-creator) | 创建单个 role 目录结构 |
-| **Team-Assembler** | [relunctance/team-assembler](https://github.com/relunctance/team-assembler) | 组合多个 roles 为完整团队 |
-| **role-installer** | [relunctance/role-installer](https://github.com/relunctance/role-installer) | 安装专家团（clone 仓库 + skills） |
-| **role-skill-manager** | [relunctance/role-skill-manager](https://github.com/relunctance/role-skill-manager) | 管理 role 的 skills（添加/删除/升级） |
+| **Team-Assembler** | [relunctance/team-assembler](https://github.com/relunctance/team-assembler) | 组合多个 roles 为完整团队（包含安装） |
 | **inbox-router** | [relunctance/inbox-router](https://github.com/relunctance/inbox-router) | sub-agent 协调通信（任务分配/汇报/等待） |
 | **master-agent** | [relunctance/master-agent-skill](https://github.com/relunctance/master-agent-skill) | 主理人 — OpenHarness 配置为专家团主 Agent |
+| **skill-registry** | [relunctance/skill-registry](https://github.com/relunctance/skill-registry) | 技能注册表 — 管理所有可用 skills |
+| **team-template** | [relunctance/team-template](https://github.com/relunctance/team-template) | 团队模板 — 预定义多领域团队结构 |
 
 ### 架构图
 
@@ -154,11 +154,9 @@ Human → 主理人 (OpenHarness)
 ### 使用流程
 
 1. **创建 Role**: `Role-Creator` 创建单个 role
-2. **调试 Role**: 单独调试优化每个 role
-3. **组装团队**: `Team-Assembler` 组合多个 roles
-4. **安装团队**: `role-installer` 一键安装
-5. **管理 Skills**: `role-skill-manager` 添加/升级 skills
-6. **协调工作**: `inbox-router` 分配任务、接收汇报
+2. **组装团队**: `Team-Assembler` 组合多个 roles + 安装 skills
+3. **管理 Skills**: `skill-registry` 注册/查找/安装 skills
+4. **协调工作**: `inbox-router` 分配任务、接收汇报
 
 ### 相关组件
 
