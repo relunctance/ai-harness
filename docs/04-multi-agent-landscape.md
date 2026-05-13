@@ -374,7 +374,7 @@ with Sandbox.create(template=os.environ["CUBE_TEMPLATE_ID"]) as sandbox:
 | **沙箱执行** | 代码隔离执行，<60ms 冷启动 | CubeSandbox | ✅ |
 | **Workflow 持久化** | 状态持久化、自动重试、失败恢复 | Temporal | ✅ |
 | **CI/CD** | 自动化测试、构建、部署 | GitHub Actions | ✅ |
-| **Scheduler** | Cron 定时触发 | Temporal | ⚠️ 需 Temporal Cloud |
+| **Scheduler** | Cron 定时触发 | 自托管 Temporal（tctl/API 或 GitHub Actions Cron） | ✅ |
 | **事件驱动** | Git Hook 触发、代码提交触发 | ❌ 仍缺失 | ❌ |
 | **优先级队列** | 任务优先级控制 | ❌ 仍缺失 | ❌ |
 
