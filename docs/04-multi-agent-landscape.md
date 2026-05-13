@@ -26,21 +26,28 @@
 - **定位**: Instant, Concurrent, Secure & Lightweight Sandbox Service
 - **特点**: <60ms 冷启动, <5MB 内存开销, KVM 隔离, E2B SDK 兼容
 
+### Everything Claude Code (ECC)
+- **GitHub**: https://github.com/affaan-m/everything-claude-code
+- **Stars**: 181k
+- **定位**: Agent harness performance optimization system
+- **特点**: 60 agents, 228 skills, Cross-harness 架构, Instincts 学习系统, AgentShield 安全审计
+
 ---
 
 ## 能力矩阵
 
-| 能力 | Superpowers | DeerFlow | CubeSandbox | OpenSpec | 缺口 |
-|------|:-----------:|:--------:|:-----------:|:--------:|:----:|
+| 能力 | Superpowers | DeerFlow | CubeSandbox | ECC | 缺口 |
+|------|:-----------:|:--------:|:-----------:|:---:|:----:|
 | 任务调度（Cron/触发器） | ❌ | ❌ | ❌ | ❌ | **❌** |
 | Agent 间通信协议 | ❌ | ❌ | ❌ | ❌ | **❌** |
 | 流水线编排引擎 | ❌ | ❌ | ❌ | ❌ | **❌** |
-| Subagent 管理 | ✅ | ✅ | ❌ | ❌ | ✅ |
-| 持久化记忆 | ❌ | ✅ | ❌ | ❌ | ✅ |
+| Subagent 管理 | ✅ | ✅ | ❌ | ✅ | ✅ |
+| 持久化记忆 | ❌ | ✅ | ❌ | ✅ (instincts) | ✅ |
 | 沙箱执行环境 | ❌ | ✅ | ✅ | ❌ | ✅ |
-| 多 Coding Agent 支持 | ✅ (8种) | ✅ | ❌ | ❌ | ✅ |
-| 规范层（Spec-Driven） | ❌ | ❌ | ❌ | ✅ | **❌** |
-| TDD / 代码质量 | ✅ | ❌ | ❌ | ❌ | ❌ |
+| 多 Coding Agent 支持 | ✅ (8种) | ✅ | ❌ | ✅ (10+) | ✅ |
+| 规范层（Spec-Driven） | ❌ | ❌ | ❌ | ❌ | **❌** |
+| TDD / 代码质量 | ✅ | ❌ | ❌ | ✅ | ✅ |
+| 安全审计 | ❌ | ❌ | ❌ | ✅ (AgentShield) | ✅ |
 
 ---
 

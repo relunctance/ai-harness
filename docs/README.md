@@ -10,6 +10,7 @@
 | [02-openspec-capabilities](./02-openspec-capabilities.md) | OpenSpec 能力分析：任务拆分、调度、多 Agent 协作 |
 | [03-ai-harness-vision](./03-ai-harness-vision.md) | Ai-Harness 愿景：项目定位、目标能力、架构方向 |
 | [04-multi-agent-landscape](./04-multi-agent-landscape.md) | 多 Agent 协作方案对比：Superpowers / DeerFlow / CubeSandbox 分析 |
+| [05-everything-claude-code](./05-everything-claude-code.md) | Everything Claude Code 调研：181k stars 的 Agent 工具集 |
 
 ## 快速导航
 
@@ -17,3 +18,4 @@
 - [Superpowers](https://github.com/obra/superpowers)
 - [DeerFlow](https://github.com/bytedance/deer-flow)
 - [CubeSandbox](https://github.com/TencentCloud/CubeSandbox)
+- [Everything Claude Code](https://github.com/affaan-m/everything-claude-code)
