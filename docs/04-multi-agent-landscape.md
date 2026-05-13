@@ -276,19 +276,21 @@ with Sandbox.create(template=os.environ["CUBE_TEMPLATE_ID"]) as sandbox:
 ### 缺口 4️⃣：规范层 + 执行层 合一
 
 ```
-现状：OpenSpec 只有规范层，Superpowers 只有方法论，都无法自动执行
+现状：OpenSpec 有执行层（/opsx:apply），Superpowers 有方法论
 需要：Spec-Driven → 自动执行 → 验证 → 反馈闭环
 ```
 
-**仍缺失**：
-- OpenSpec 的 design.md 需要人工执行
-- Superpowers 的方法论需要人工驱动 subagent
-- 没有组件能把"规范文档"自动转化为"可执行任务"
+**✅ 已被 OpenSpec 填补**：
+- 规范定义：`specs/*.md`
+- 任务清单：`tasks.md`
+- 人工执行：`/opsx:apply`
+- 验证：`/opsx:verify`
 
-**影响**：
-- 规范和执行脱节
-- 无法验证执行是否符合规范
-- 无法从执行结果反馈改进规范
+**但 OpenSpec 的执行是人工驱动的**：
+- `/opsx:apply` 由人工触发，不是自动化流水线
+- Superpowers 的方法论需要人工驱动 subagent
+
+**Ai-Harness 的价值**：结合 OpenSpec 规范层 + ClawTeam/Temporal 自动化执行，实现 Spec-Driven 自动化流水线。
 
 ---
 
@@ -313,11 +315,13 @@ with Sandbox.create(template=os.environ["CUBE_TEMPLATE_ID"]) as sandbox:
 
 | 缺口 | 状态 | 填补组件 |
 |------|------|---------|
-| 任务调度中心 | ⚠️ 部分填补 | Temporal（Cron）、ClawTeam（Task Dependencies） |
+| 任务调度中心 | ✅ 已填补 | Temporal Schedule + tctl/API |
 | Agent 间通信协议 | ✅ 已填补 | ClawTeam（inbox） |
 | 流水线编排引擎 | ✅ 已填补 | Temporal |
-| 规范层 + 执行层 | ❌ 仍缺失 | 无 |
-| 统一多 Agent 管理层 | ⚠️ 部分填补 | ClawTeam |
+| 规范层 + 执行层 | ✅ 已填补 | OpenSpec（人工驱动执行） |
+| 统一多 Agent 管理层 | ⚠️ 部分填补 | ClawTeam（规模有限） |
+| 事件驱动 | ❌ 仍缺失 | — |
+| 优先级队列 | ❌ 仍缺失 | — |
 
 ---
 
