@@ -216,19 +216,27 @@ with Sandbox.create(template=os.environ["CUBE_TEMPLATE_ID"]) as sandbox:
 
 ## 五大核心缺口
 
+> ⚠️ **注意**：随着 MVP 组件调研完成，部分缺口已被现有组件填补，以下是更新后的评估。
+
 ### 缺口 1️⃣：任务调度中心（Scheduler）
 
 ```
-现状：没有项目支持定时触发、事件驱动、任务依赖图
+现状：定时触发、事件驱动、任务依赖图
 需要：Cron + 事件触发 + 优先级队列 + DAG 调度
 ```
 
-**为什么缺失**：Superpowers/DeerFlow/CubeSandbox 都是"人驱动"或"请求驱动"，没有后台任务调度能力。
+**已被填补**：
+- **Task Dependencies** — ClawTeam 支持 `--blocked-by` + auto-unblock
+- **Cron 调度** — Temporal 支持定时触发
+
+**仍缺失**：
+- 事件驱动触发（代码提交 → 自动触发任务）
+- 优先级队列
+- 完整 DAG 可视化
 
 **影响**：
-- 无法自动化周期性任务（如每日构建、巡检）
-- 无法实现事件驱动（代码提交触发评审）
-- 无法管理任务依赖（DAG 执行顺序）
+- 无法实现 Git Hook 触发评审
+- 任务优先级无法控制
 
 ---
 
@@ -239,29 +247,29 @@ with Sandbox.create(template=os.environ["CUBE_TEMPLATE_ID"]) as sandbox:
 需要：消息总线 + 任务分发 + 状态同步 + Agent 发现机制
 ```
 
-**为什么缺失**：现有项目都是"人调用 Agent"，不是"Agent 调用 Agent"。
+**✅ 已被 ClawTeam 填补**：
+- `inbox send/peek/broadcast` — 真正的 Agent↔Agent 通信
+- `clawteam spawn` — 任务分发
+- `task wait` — 状态同步
 
-**影响**：
-- Agent 之间无法直接协作
-- 无法实现任务接力（A agent 完成 → 通知 B agent 继续）
-- 无法共享上下文状态
+**结论**：缺口已填补，ClawTeam 是真正的多 Agent 协调系统。
 
 ---
 
 ### 缺口 3️⃣：流水线编排引擎（Workflow Orchestrator）
 
 ```
-现状：没有项目有状态机 + 条件分支 + 循环 + 人工审批 gate
+现状：状态机 + 条件分支 + 循环 + 人工审批 gate
 需要：Long-running workflow + compensation/回滚 + 人机协作
 ```
 
-**为什么缺失**：DeerFlow 的 subagent 是"并行执行 + 结果汇总"，没有复杂流程控制。
+**✅ 已被 Temporal 填补**：
+- Workflow 状态持久化
+- Activity 自动重试 + 超时
+- 补偿机制（Saga 模式）
+- 人机协作（Signal/Query）
 
-**影响**：
-- 无法实现条件分支（if/else）
-- 无法实现循环（retry/until）
-- 无法人工审批后继续（human-in-the-loop）
-- 无法补偿事务（compensation）
+**结论**：缺口已填补，Temporal 是生产级的流水线编排引擎。
 
 ---
 
@@ -272,7 +280,10 @@ with Sandbox.create(template=os.environ["CUBE_TEMPLATE_ID"]) as sandbox:
 需要：Spec-Driven → 自动执行 → 验证 → 反馈闭环
 ```
 
-**为什么缺失**：OpenSpec 产生的 design.md 是静态文档，需要人工执行。Superpowers 是方法论，没有规范输入。
+**仍缺失**：
+- OpenSpec 的 design.md 需要人工执行
+- Superpowers 的方法论需要人工驱动 subagent
+- 没有组件能把"规范文档"自动转化为"可执行任务"
 
 **影响**：
 - 规范和执行脱节
@@ -288,12 +299,25 @@ with Sandbox.create(template=os.environ["CUBE_TEMPLATE_ID"]) as sandbox:
 需要：统一接口抽象多 Agent（Claude Code/Cursor/Copilot 等）
 ```
 
-**为什么缺失**：Superpowers 是"给每个 agent 装技能"，不是"多 agent 协作"。
+**✅ 已被 ClawTeam 部分填补**：
+- `clawteam spawn` 支持多种 Agent（OpenClaw/Claude Code/Codex/Hermes/nanobot/Cursor）
+- Git Worktree 隔离
 
-**影响**：
-- 每个 agent 独立工作，无法协作
-- 无法跨 agent 共享任务状态
-- 无法统一调度多 agent
+**仍缺失**：
+- 统一的任务队列（ClawTeam 用文件 + tmux，规模有限）
+- 跨机器协调（NFS/P2P 还在规划中）
+
+---
+
+### 缺口评估总结
+
+| 缺口 | 状态 | 填补组件 |
+|------|------|---------|
+| 任务调度中心 | ⚠️ 部分填补 | Temporal（Cron）、ClawTeam（Task Dependencies） |
+| Agent 间通信协议 | ✅ 已填补 | ClawTeam（inbox） |
+| 流水线编排引擎 | ✅ 已填补 | Temporal |
+| 规范层 + 执行层 | ❌ 仍缺失 | 无 |
+| 统一多 Agent 管理层 | ⚠️ 部分填补 | ClawTeam |
 
 ---
 
@@ -303,54 +327,78 @@ with Sandbox.create(template=os.environ["CUBE_TEMPLATE_ID"]) as sandbox:
 ┌──────────────────────────────────────────────────────────────┐
 │                         Ai-Harness                            │
 │                                                              │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
-│  │  Scheduler   │  │  Agent Mesh  │  │  Workflow    │      │
-│  │  (定时/触发)  │  │  (消息总线)   │  │ Orchestrator │      │
-│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘      │
-│         │                  │                  │               │
-│         └──────────────────┼──────────────────┘               │
-│                            │                                  │
-│  ┌─────────────────────────┼─────────────────────────────┐   │
-│  │                  Agent Runtime                           │   │
-│  │  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐  │   │
-│  │  │ Claude  │  │ Cursor  │  │Copilot  │  │  ...    │  │   │
-│  │  │  Code   │  │         │  │         │  │         │  │   │
-│  │  └─────────┘  └─────────┘  └─────────┘  └─────────┘  │   │
-│  └─────────────────────────────────────────────────────────┘   │
-│                            │                                  │
-│         ┌──────────────────┼──────────────────┐                │
-│         │                  │                  │                 │
-│    ┌────▼────┐    ┌──────▼──────┐   ┌──────▼──────┐       │
-│    │ OpenSpec│    │   Memory    │   │   Sandbox   │       │
-│    │ (规范层) │    │  (持久化)    │   │Deer/Cube    │       │
-│    └──────────┘    └─────────────┘   └─────────────┘       │
+│  ┌──────────────────────────────────────────────────────────┐ │
+│  │                  DeerFlow 2.0 (主控 Agent)                │ │
+│  │  Lead Agent — 需求理解、任务拆解                          │ │
+│  │  task_tool — 托身 Subagent 执行                          │ │
+│  │  Sandbox — 隔离执行环境                                  │ │
+│  │  Memory — 长期记忆                                       │ │
+│  │  Checkpointer — LangGraph 状态持久化                     │ │
+│  └──────────────────────────┬─────────────────────────────┘ │
+│                               │                               │
+│  ┌──────────────────────────▼─────────────────────────────┐ │
+│  │              ClawTeam-OpenClaw (多 Agent 协调)           │ │
+│  │  clawteam spawn — 托身独立 Worker Agents                 │ │
+│  │  Task Dependencies — --blocked-by + auto-unblock         │ │
+│  │  Team Templates — TOML 模板                              │ │
+│  │  inbox send/peek/broadcast — Agent 间消息通信             │ │
+│  │  Cost Dashboard — 实时 token/cost 追踪                   │ │
+│  └──────────────────────────┬─────────────────────────────┘ │
+│                               │                               │
+│         ┌────────────────────┼────────────────────┐         │
+│         │                    │                    │         │
+│  ┌──────▼──────┐    ┌────────▼───────┐   ┌───────▼──────┐   │
+│  │  OpenSpec   │    │  Superpowers   │   │ CubeSandbox  │   │
+│  │  (规范层)   │    │  (TDD 方法论)   │   │  (沙箱执行)   │   │
+│  └─────────────┘    └────────────────┘   └──────────────┘   │
+│                               │                               │
+│         ┌────────────────────┼────────────────────┐         │
+│         │                    │                    │         │
+│  ┌──────▼──────┐    ┌────────▼───────┐   ┌───────▼──────┐   │
+│  │  Temporal   │    │ GitHub Actions │   │    Human     │   │
+│  │ (持久化)     │    │   (CI/CD)     │   │  (验收签字)   │   │
+│  └─────────────┘    └────────────────┘   └──────────────┘   │
 └──────────────────────────────────────────────────────────────┘
 ```
 
 ### 核心模块说明
 
-| 模块 | 职责 | 技术选型（待定） |
-|------|------|-----------------|
-| **Scheduler** | Cron 调度、事件触发、任务队列、DAG | Bull / Celery / 自研 |
-| **Agent Mesh** | Agent 间消息总线、任务分发、状态同步 | Redis Pub/Sub / NATS / 自研 |
-| **Workflow Orchestrator** | 状态机、条件分支、循环、人工审批 | Temporal / 自研 |
-| **Agent Runtime** | 统一接口抽象多 Agent | OpenSpec Agent Protocol |
-| **Sandbox** | 代码隔离执行环境 | DeerFlow Sandbox / CubeSandbox |
-| **Memory** | 跨会话持久记忆 | Redis / PostgreSQL |
-| **OpenSpec Engine** | 规范层执行 | 继承 OpenSpec |
+> ✅ = 已有 MVP 组件，⚠️ = 部分填补，❌ = 仍缺失
+
+| 模块 | 职责 | 技术选型 | 状态 |
+|------|------|---------|------|
+| **主控 Agent** | 需求理解、任务拆解、Subagent 托身 | DeerFlow 2.0 | ✅ |
+| **多 Agent 协调** | Task Dependencies、inbox 通信、Team 模板 | ClawTeam-OpenClaw | ✅ |
+| **规范层** | Spec-Driven 任务定义 | OpenSpec | ✅ |
+| **开发方法论** | TDD、brainstorming、parallel dispatch | Superpowers | ✅ |
+| **沙箱执行** | 代码隔离执行，<60ms 冷启动 | CubeSandbox | ✅ |
+| **Workflow 持久化** | 状态持久化、自动重试、失败恢复 | Temporal | ✅ |
+| **CI/CD** | 自动化测试、构建、部署 | GitHub Actions | ✅ |
+| **Scheduler** | Cron 定时触发 | Temporal | ⚠️ 需 Temporal Cloud |
+| **事件驱动** | Git Hook 触发、代码提交触发 | ❌ 仍缺失 | ❌ |
+| **优先级队列** | 任务优先级控制 | ❌ 仍缺失 | ❌ |
 
 ---
 
-## 技术选型（待调研）
+## 技术选型（已确定）
 
-以下组件需要调研确定：
+经过完整调研，MVP 组件选型已确定：
 
-1. **消息队列**：Redis Pub/Sub vs NATS vs Kafka
-2. **任务队列**：Bull (Redis) vs Celery vs 自研
-3. **调度器**：node-cron vs Quartz vs 自研
-4. **Workflow 引擎**：Temporal vs Prefect vs 自研
-5. **Agent 运行时**：Docker 容器化 vs 直接调用 CLI
-6. **状态存储**：Redis vs PostgreSQL vs 文件系统
-7. **API 网关**：Fastify vs Express vs 自研
-8. **部署方式**：Docker Compose vs Kubernetes
-9. **Agent 协议**：WebSocket vs gRPC vs HTTP Long-poll
+| 组件 | 选型 | 调研文档 |
+|------|------|---------|
+| 主控 Agent | **DeerFlow 2.0** | [12-deerflow-2.md](./12-deerflow-2.md) |
+| 多 Agent 协调 | **ClawTeam-OpenClaw** | （见 README） |
+| 规范层 | **OpenSpec** | [01-openspec-overview.md](./01-openspec-overview.md) |
+| 开发方法论 | **Superpowers** | [04-multi-agent-landscape.md](./04-multi-agent-landscape.md) |
+| 沙箱执行 | **CubeSandbox** | [04-multi-agent-landscape.md](./04-multi-agent-landscape.md) |
+| Workflow 持久化 | **Temporal** | [08-temporal.md](./08-temporal.md) |
+| CI/CD | **GitHub Actions** | — |
+
+### 待补充的缺口
+
+以下能力 MVP 阶段仍未有成熟开源组件，需后续评估：
+
+1. **事件驱动触发** — Git Hook → 自动触发任务（如提交代码 → 自动评审）
+2. **优先级队列** — 任务优先级控制
+3. **完整 DAG 可视化** — 任务依赖关系可视化
+4. **规范层 + 执行层 闭环** — OpenSpec design.md → 自动任务执行
