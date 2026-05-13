@@ -17,6 +17,7 @@
 | [Ai-Harness 愿景](./docs/03-ai-harness-vision.md) | 项目定位、目标能力、架构方向 |
 | [多 Agent 协作方案对比](./docs/04-multi-agent-landscape.md) | Superpowers / DeerFlow / CubeSandbox 深度分析 |
 | [Everything Claude Code](./docs/05-everything-claude-code.md) | 181k stars 的 Agent 工具集 |
+| [Hermes Agent](./docs/06-hermes-agent.md) | 147k stars 自改进 Agent |
 
 ## 核心思路
 
@@ -39,3 +40,4 @@
 - [DeerFlow](https://github.com/bytedance/deer-flow) — Super Agent Harness（Sandbox + Sub-agents + Memory）
 - [CubeSandbox](https://github.com/TencentCloud/CubeSandbox) — KVM 沙箱，<60ms 冷启动
 - [Everything Claude Code](https://github.com/affaan-m/everything-claude-code) — 181k stars 的跨平台 Agent 工具集
+- [Hermes Agent](https://github.com/NousResearch/hermes-agent) — 147k stars 自改进 AI Agent

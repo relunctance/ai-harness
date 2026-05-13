@@ -32,22 +32,30 @@
 - **定位**: Agent harness performance optimization system
 - **特点**: 60 agents, 228 skills, Cross-harness 架构, Instincts 学习系统, AgentShield 安全审计
 
+### Hermes Agent
+- **GitHub**: https://github.com/NousResearch/hermes-agent
+- **Stars**: 147k
+- **定位**: The self-improving AI agent
+- **特点**: 自改进学习循环, FTS5 搜索, Cron 调度, 多平台网关(20+), 任意模型(200+), 7 种运行环境
+
 ---
 
 ## 能力矩阵
 
-| 能力 | Superpowers | DeerFlow | CubeSandbox | ECC | 缺口 |
-|------|:-----------:|:--------:|:-----------:|:---:|:----:|
-| 任务调度（Cron/触发器） | ❌ | ❌ | ❌ | ❌ | **❌** |
-| Agent 间通信协议 | ❌ | ❌ | ❌ | ❌ | **❌** |
-| 流水线编排引擎 | ❌ | ❌ | ❌ | ❌ | **❌** |
-| Subagent 管理 | ✅ | ✅ | ❌ | ✅ | ✅ |
-| 持久化记忆 | ❌ | ✅ | ❌ | ✅ (instincts) | ✅ |
-| 沙箱执行环境 | ❌ | ✅ | ✅ | ❌ | ✅ |
-| 多 Coding Agent 支持 | ✅ (8种) | ✅ | ❌ | ✅ (10+) | ✅ |
-| 规范层（Spec-Driven） | ❌ | ❌ | ❌ | ❌ | **❌** |
-| TDD / 代码质量 | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 安全审计 | ❌ | ❌ | ❌ | ✅ (AgentShield) | ✅ |
+| 能力 | Superpowers | DeerFlow | CubeSandbox | ECC | Hermes | 缺口 |
+|------|:-----------:|:--------:|:-----------:|:---:|:------:|:----:|
+| 任务调度（Cron/触发器） | ❌ | ❌ | ❌ | ❌ | ✅ | **❌** |
+| Agent 间通信协议 | ❌ | ❌ | ❌ | ❌ | ❌ | **❌** |
+| 流水线编排引擎 | ❌ | ❌ | ❌ | ❌ | ❌ | **❌** |
+| Subagent 管理 | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ |
+| 持久化记忆 | ❌ | ✅ | ❌ | ✅ (instincts) | ✅ (FTS5) | ✅ |
+| 沙箱执行环境 | ❌ | ✅ | ✅ | ❌ | ✅ (7种) | ✅ |
+| 多 Coding Agent 支持 | ✅ (8种) | ✅ | ❌ | ✅ (10+) | ✅ | ✅ |
+| 规范层（Spec-Driven） | ❌ | ❌ | ❌ | ❌ | ❌ | **❌** |
+| TDD / 代码质量 | ✅ | ❌ | ❌ | ✅ | ❌ | ✅ |
+| 安全审计 | ❌ | ❌ | ❌ | ✅ (AgentShield) | ❌ | ✅ |
+| 自改进学习 | ❌ | ❌ | ❌ | ✅ (instincts) | ✅ | ✅ |
+| 多平台网关 | ❌ | ✅ (IM) | ❌ | ❌ | ✅ (20+) | ✅ |
 
 ---
 
