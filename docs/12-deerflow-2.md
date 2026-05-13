@@ -138,28 +138,52 @@ DeerFlow 2.0 使用 **LangGraph Checkpointer**：
 
 | 能力 | DeerFlow 2.0 | OpenHarness |
 |------|-------------|-------------|
-| 主控 Agent | ✅ LangGraph Lead Agent | ✅ LangGraph + ohmo |
-| Subagent | ✅ task_tool | ✅ Swarm spawn |
+| 主控 Agent | ✅ LangGraph Lead Agent | ✅ LangGraph + ohmo + Swarm |
+| Subagent/Worker | ✅ task_tool（无独立身份） | ✅ swarm spawn（有独立身份） |
+| 多 Agent 管理 | ❌ 无 | ✅ team/agent/task/mailbox |
+| Cron 调度 | ❌ 无 | ✅ cron_create/list/delete |
+| ohmo 助手 | ❌ 无 | ✅ 飞书/Slack/Discord/Telegram |
 | Sandbox | ✅ 本地/AIO/Docker | ✅ sandbox/ |
 | Memory | ✅ 文件 | ✅ memory/ |
-| IM Channels | ✅ 飞书/Slack/Discord | ✅ ohmo |
-| Cron 调度 | ❌ | ✅ CronCreate |
-| Task Dependencies | ❌ | ❌ |
-| Team Templates | ❌ | ❌ |
-| Cost Dashboard | ❌ | ❌ |
+| IM Channels | ✅ 飞书等 | ✅ ohmo |
+| Task Dependencies | ❌ 无 | ❌ 无（用 ClawTeam） |
+| Team Templates | ❌ 无 | ❌ 无（用 ClawTeam） |
+| Cost Dashboard | ❌ 无 | ❌ 无（用 ClawTeam） |
 
 ---
 
 ## 结论
 
-DeerFlow 2.0 是一个**单主 Agent + 从属 Subagent**的系统，不是真正的多 Agent 协调平台。
+### DeerFlow 2.0 不适合做主控 Agent
 
-**DeerFlow 2.0 适合**：
-- 单主 Agent 场景
-- 需要 Subagent 隔离执行的场景
-- 快速原型验证
+DeerFlow 2.0 是一个**单主 Agent + 从属 Subagent**的系统，存在以下限制：
 
-**DeerFlow 2.0 不适合**：
-- 需要真正 Agent 间通信的场景（用 ClawTeam）
-- 需要 Task Dependencies 的场景（用 ClawTeam）
-- 跨服务/跨进程的分布式持久化（用 Temporal）
+| 限制 | 说明 |
+|------|------|
+| **Subagent 无独立身份** | Subagent 只是工具调用，没有自己的 inbox/mailbox，无法与其他 Agent 直接通信 |
+| **没有 Swarm 系统** | 无法管理多 Agent 团队（team/agent/task） |
+| **没有 Cron 调度** | 无法定时触发任务 |
+| **没有 ohmo** | 无法接入飞书等 IM 助手 |
+| **持久化后端有限** | 只支持 memory/sqlite/postgres，不支持跨服务协调 |
+
+### DeerFlow 2.0 的合适定位
+
+| 场景 | 角色 | 说明 |
+|------|------|------|
+| **Sandbox 执行引擎** | 可选组件 | OpenHarness 可调用 DeerFlow 的 Sandbox 执行代码 |
+| **快速原型验证** | 独立使用 | 单一 Agent 任务，适合快速验证 |
+
+### DeerFlow 2.0 vs Temporal vs ClawTeam
+
+| 能力 | DeerFlow 2.0 | Temporal | ClawTeam |
+|------|-------------|----------|----------|
+| 持久化 | LangGraph Checkpoint | ✅ 完整 Workflow | ❌ |
+| 多 Agent 协调 | ❌ | ❌ | ✅ inbox/Task Dep |
+| Cron 调度 | ❌ | ✅ Schedule | ❌ |
+| 主控 Agent | ✅ | ❌ | ❌ |
+
+**最终选型**：
+- **OpenHarness** — 主控 Agent（Swarm + Cron + ohmo）
+- **ClawTeam** — 多 Agent 协调（Task Dependencies + Team Templates + Cost Dashboard）
+- **Temporal** — Workflow 持久化
+- **DeerFlow 2.0** — 可选 Sandbox 执行引擎
