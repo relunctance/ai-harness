@@ -12,6 +12,7 @@
 | [04-multi-agent-landscape](./04-multi-agent-landscape.md) | 多 Agent 协作方案对比：Superpowers / DeerFlow / CubeSandbox 分析 |
 | [05-everything-claude-code](./05-everything-claude-code.md) | Everything Claude Code 调研：181k stars 的 Agent 工具集 |
 | [06-hermes-agent](./06-hermes-agent.md) | Hermes Agent 调研：147k stars 自改进 Agent |
+| [07-hermes-agent-self-evolution](./07-hermes-agent-self-evolution.md) | Hermes Agent Self-Evolution 调研：DSPy + GEPA 进化优化 |
 
 ## 快速导航
 
@@ -21,3 +22,4 @@
 - [CubeSandbox](https://github.com/TencentCloud/CubeSandbox)
 - [Everything Claude Code](https://github.com/affaan-m/everything-claude-code)
 - [Hermes Agent](https://github.com/NousResearch/hermes-agent)
+- [Hermes Agent Self-Evolution](https://github.com/NousResearch/hermes-agent-self-evolution)

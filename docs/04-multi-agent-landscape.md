@@ -38,24 +38,31 @@
 - **定位**: The self-improving AI agent
 - **特点**: 自改进学习循环, FTS5 搜索, Cron 调度, 多平台网关(20+), 任意模型(200+), 7 种运行环境
 
+### Hermes Agent Self-Evolution
+- **GitHub**: https://github.com/NousResearch/hermes-agent-self-evolution
+- **Stars**: 3.1k
+- **定位**: Evolutionary self-improvement for Hermes Agent
+- **特点**: DSPy + GEPA 进化优化, 5 阶段递进, No GPU, ~$2-10 per run, ICLR 2026 Oral
+
 ---
 
 ## 能力矩阵
 
-| 能力 | Superpowers | DeerFlow | CubeSandbox | ECC | Hermes | 缺口 |
-|------|:-----------:|:--------:|:-----------:|:---:|:------:|:----:|
-| 任务调度（Cron/触发器） | ❌ | ❌ | ❌ | ❌ | ✅ | **❌** |
-| Agent 间通信协议 | ❌ | ❌ | ❌ | ❌ | ❌ | **❌** |
-| 流水线编排引擎 | ❌ | ❌ | ❌ | ❌ | ❌ | **❌** |
-| Subagent 管理 | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ |
-| 持久化记忆 | ❌ | ✅ | ❌ | ✅ (instincts) | ✅ (FTS5) | ✅ |
-| 沙箱执行环境 | ❌ | ✅ | ✅ | ❌ | ✅ (7种) | ✅ |
-| 多 Coding Agent 支持 | ✅ (8种) | ✅ | ❌ | ✅ (10+) | ✅ | ✅ |
-| 规范层（Spec-Driven） | ❌ | ❌ | ❌ | ❌ | ❌ | **❌** |
-| TDD / 代码质量 | ✅ | ❌ | ❌ | ✅ | ❌ | ✅ |
-| 安全审计 | ❌ | ❌ | ❌ | ✅ (AgentShield) | ❌ | ✅ |
-| 自改进学习 | ❌ | ❌ | ❌ | ✅ (instincts) | ✅ | ✅ |
-| 多平台网关 | ❌ | ✅ (IM) | ❌ | ❌ | ✅ (20+) | ✅ |
+| 能力 | Superpowers | DeerFlow | CubeSandbox | ECC | Hermes | Self-Evolution | 缺口 |
+|------|:-----------:|:--------:|:-----------:|:---:|:------:|:--------------:|:----:|
+| 任务调度（Cron/触发器） | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | **❌** |
+| Agent 间通信协议 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | **❌** |
+| 流水线编排引擎 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | **❌** |
+| Subagent 管理 | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | ✅ |
+| 持久化记忆 | ❌ | ✅ | ❌ | ✅ (instincts) | ✅ (FTS5) | ❌ | ✅ |
+| 沙箱执行环境 | ❌ | ✅ | ✅ | ❌ | ✅ (7种) | ❌ | ✅ |
+| 多 Coding Agent 支持 | ✅ (8种) | ✅ | ❌ | ✅ (10+) | ✅ | ❌ | ✅ |
+| 规范层（Spec-Driven） | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | **❌** |
+| TDD / 代码质量 | ✅ | ❌ | ❌ | ✅ | ❌ | ❌ | ✅ |
+| 安全审计 | ❌ | ❌ | ❌ | ✅ (AgentShield) | ❌ | ❌ | ✅ |
+| 自改进学习 | ❌ | ❌ | ❌ | ✅ (instincts) | ✅ | ✅ (GEPA) | ✅ |
+| 多平台网关 | ❌ | ✅ (IM) | ❌ | ❌ | ✅ (20+) | ❌ | ✅ |
+| 自动 Skill 进化 | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | **❌** |
 
 ---
 
