@@ -56,27 +56,36 @@
 - **定位**: Agent Skills 官方参考实现
 - **特点**: agentskills.io 标准, SKILL.md 格式规范, 文档/创意/开发/企业技能集
 
+### ClawTeam-OpenClaw
+- **GitHub**: https://github.com/win4r/ClawTeam-OpenClaw
+- **Stars**: 1.4k
+- **定位**: Multi-agent swarm coordination for CLI coding agents
+- **特点**: Task Dependencies + auto-unblock, Team Templates (TOML), Git Worktree 隔离, Cost Dashboard, inbox send/peek/broadcast, 支持 OpenClaw/Claude Code/Codex/Hermes/nanobot/Cursor
+
 ---
 
 ## 能力矩阵
 
-| 能力 | Superpowers | DeerFlow | CubeSandbox | ECC | Hermes | Self-Evolution | Temporal | OpenHarness | 缺口 |
-|------|:-----------:|:--------:|:-----------:|:---:|:------:|:--------------:|:--------:|:-----------:|:----:|
-| 任务调度（Cron/触发器） | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ✅ | ✅ (CronCreate) | **❌** |
-| Agent 间通信协议 | ❌ | ✅ (subagent 中转) | ❌ | ❌ | ✅ (ACP, 单 Agent 控制) | ❌ | ❌ | ✅ (Mailbox) | **❌** |
-| 流水线编排引擎 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | **❌** |
-| Subagent 管理 | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | ❌ | ✅ (Swarm) | ✅ |
-| 持久化记忆 | ❌ | ✅ | ❌ | ✅ (instincts) | ✅ (FTS5) | ❌ | ❌ | ✅ (memory/) | ✅ |
-| 沙箱执行环境 | ❌ | ✅ | ✅ | ❌ | ✅ (7种) | ❌ | ❌ | ✅ (sandbox/) | ✅ |
-| 多 Coding Agent 支持 | ✅ (8种) | ✅ | ❌ | ✅ (10+) | ✅ | ❌ | ❌ | ✅ | ✅ |
-| 规范层（Spec-Driven） | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | **❌** |
-| TDD / 代码质量 | ✅ | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ | ✅ |
-| 安全审计 | ❌ | ❌ | ❌ | ✅ (AgentShield) | ❌ | ❌ | ❌ | ✅ (permissions/) | ✅ |
-| 自改进学习 | ❌ | ❌ | ❌ | ✅ (instincts) | ✅ | ✅ (GEPA) | ❌ | ❌ | ✅ |
-| 多平台网关 | ❌ | ✅ (IM) | ❌ | ❌ | ✅ (20+) | ❌ | ❌ | ✅ (Feishu等) | ✅ |
-| 自动 Skill 进化 | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ | **❌** |
-| Workflow 持久化执行 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ✅ |
-| 状态机 / DAG | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ✅ |
+| 能力 | Superpowers | DeerFlow | CubeSandbox | ECC | Hermes | Self-Evolution | Temporal | OpenHarness | ClawTeam | 缺口 |
+|------|:-----------:|:--------:|:-----------:|:---:|:------:|:--------------:|:--------:|:-----------:|:--------:|:----:|
+| 任务调度（Cron/触发器） | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ✅ | ✅ (CronCreate) | ❌ | **❌** |
+| Agent 间通信协议 | ❌ | ✅ (subagent 中转) | ❌ | ❌ | ✅ (ACP, 单 Agent 控制) | ❌ | ❌ | ✅ (Mailbox) | ✅ (inbox) | **❌** |
+| 流水线编排引擎 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ | **❌** |
+| Subagent 管理 | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | ❌ | ✅ (Swarm) | ✅ (spawn) | ✅ |
+| 持久化记忆 | ❌ | ✅ | ❌ | ✅ (instincts) | ✅ (FTS5) | ❌ | ❌ | ✅ (memory/) | ❌ | ✅ |
+| 沙箱执行环境 | ❌ | ✅ | ✅ | ❌ | ✅ (7种) | ❌ | ❌ | ✅ (sandbox/) | ❌ | ✅ |
+| 多 Coding Agent 支持 | ✅ (8种) | ✅ | ❌ | ✅ (10+) | ✅ | ❌ | ❌ | ✅ | ✅ (6种) | ✅ |
+| 规范层（Spec-Driven） | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | **❌** |
+| TDD / 代码质量 | ✅ | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
+| 安全审计 | ❌ | ❌ | ❌ | ✅ (AgentShield) | ❌ | ❌ | ❌ | ✅ (permissions/) | ❌ | ✅ |
+| 自改进学习 | ❌ | ❌ | ❌ | ✅ (instincts) | ✅ | ✅ (GEPA) | ❌ | ❌ | ❌ | ✅ |
+| 多平台网关 | ❌ | ✅ (IM) | ❌ | ❌ | ✅ (20+) | ❌ | ❌ | ✅ (Feishu等) | ❌ | ✅ |
+| 自动 Skill 进化 | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ | **❌** |
+| Workflow 持久化执行 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ | ✅ |
+| 状态机 / DAG | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ | ✅ |
+| Task Dependencies | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
+| Team Templates | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ (TOML) | ✅ |
+| Cost Dashboard | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 
 ---
 

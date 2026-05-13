@@ -14,7 +14,8 @@ OpenSpec 解决了"AI 编程需求模糊"的问题，但缺少任务调度、Age
 
 | 组件 | 解决什么问题 |
 |------|-------------|
-| **OpenHarness** | 主控 Agent + ohmo 飞书助手 + Swarm 多 Agent 协调 + Mailbox 消息队列 |
+| **OpenHarness** | 主控 Agent + ohmo 飞书助手 + Agent Loop + Cron 调度 |
+| **ClawTeam-OpenClaw** | Swarm 多 Agent 协调 + Task Dependencies + Team 模板 + Git Worktree 隔离 |
 | **OpenSpec** | 规范层，spec-driven 开发 |
 | **Superpowers** | TDD 方法论，brainstorming，parallel agent dispatch |
 | **CubeSandbox** | 沙箱执行，<60ms 冷启动 |
@@ -25,6 +26,7 @@ OpenSpec 解决了"AI 编程需求模糊"的问题，但缺少任务调度、Age
 
 ### 1. 需求理解与拆解
 - OpenHarness Agent Loop 理解用户需求
+- ohmo 接收飞书/Slack/Discord/Telegram 消息
 - Superpowers brainstorming 澄清模糊需求
 - 拆解成可执行的小任务
 
@@ -34,9 +36,10 @@ OpenSpec 解决了"AI 编程需求模糊"的问题，但缺少任务调度、Age
 - spec-driven 执行
 
 ### 3. 多 Agent 并行开发
-- OpenHarness Swarm 协调多 Agent
-- CubeSandbox 隔离执行环境
-- Superpowers subagent-driven 并行分派
+- ClawTeam-OpenClaw Swarm 协调多 Agent
+- Task Dependencies 确保依赖顺序（`--blocked-by` + auto-unblock）
+- Git Worktree 隔离每个 Agent 的工作区
+- Team Templates 快速初始化团队（`clawteam launch hedge-fund`）
 
 ### 4. TDD 测试驱动
 - Superpowers TDD 流程
@@ -73,18 +76,27 @@ OpenSpec 解决了"AI 编程需求模糊"的问题，但缺少任务调度、Age
 │  OpenHarness (主控 Agent)                                    │
 │  · ohmo — 飞书/Slack/Discord/Telegram 个人助手               │
 │  · Agent Loop — query → stream → tool-call → loop           │
-│  · Swarm — team/agent/send_message 多 Agent 协调             │
-│  · Mailbox — 文件-based 异步消息队列                         │
 │  · CronCreate/List/Delete — 任务调度                        │
 └────────────┬────────────────────────────────────────────────┘
              │
              ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  OpenSpec (规范层)                                           │
-│  Superpowers (开发方法论)                                    │
-│  CubeSandbox (沙箱执行)                                      │
-│  Temporal (Workflow 持久化)                                  │
-│  GitHub Actions (CI/CD)                                      │
+│  ClawTeam-OpenClaw (Swarm 协调)                             │
+│  · clawteam spawn — 托身 worker agents                     │
+│  · Task Dependencies — --blocked-by + auto-unblock          │
+│  · Team Templates — TOML 模板                               │
+│  · Git Worktree — 每个 agent 强制隔离                        │
+│  · inbox send/peek/broadcast — Agent 间消息通信              │
+└────────────┬────────────────────────────────────────────────┘
+             │
+             ▼
+┌─────────────────────────────────────────────────────────────┐
+│  OpenSpec (规范层)  │  Superpowers (TDD)  │  CubeSandbox (沙箱)  │
+└─────────────────────────────────────────────────────────────┘
+             │
+             ▼
+┌─────────────────────────────────────────────────────────────┐
+│  Temporal (Workflow 持久化)  │  GitHub Actions (CI/CD)       │
 └─────────────────────────────────────────────────────────────┘
 ```
 
