@@ -21,6 +21,7 @@
 | [Hermes Agent Self-Evolution](./docs/07-hermes-agent-self-evolution.md) | DSPy + GEPA 进化优化 |
 | [Temporal](./docs/08-temporal.md) | 20k stars 持久化执行平台 |
 | [Anthropic Skills](./docs/09-anthropic-skills.md) | 133k stars Agent Skills 官方仓库 |
+| [重新审视 Agent 间通信](./docs/10-重新审视Agent间通信.md) | 已调研项目的 Agent 通信模式分析与缺口 |
 
 ## 核心思路
 
@@ -47,3 +48,4 @@
 - [Hermes Agent Self-Evolution](https://github.com/NousResearch/hermes-agent-self-evolution) — DSPy + GEPA 进化优化
 - [Temporal](https://github.com/temporalio/temporal) — 20k stars 持久化执行平台
 - [Anthropic Skills](https://github.com/anthropics/skills) — 133k stars Agent Skills 官方仓库
+- [重新审视 Agent 间通信](https://github.com/relunctance/ai-harness/blob/main/docs/10-重新审视Agent间通信.md) — 已调研项目的 Agent 通信模式分析与缺口

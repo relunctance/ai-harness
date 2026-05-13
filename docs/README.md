@@ -15,6 +15,7 @@
 | [07-hermes-agent-self-evolution](./07-hermes-agent-self-evolution.md) | Hermes Agent Self-Evolution 调研：DSPy + GEPA 进化优化 |
 | [08-temporal](./08-temporal.md) | Temporal 调研：20k stars 持久化执行平台 |
 | [09-anthropic-skills](./09-anthropic-skills.md) | Anthropic Skills 调研：133k stars Agent Skills 官方仓库 |
+| [10-重新审视Agent间通信](./10-重新审视Agent间通信.md) | 重新审视：已调研项目的 Agent 通信模式分析与缺口 |
 
 ## 快速导航
 
